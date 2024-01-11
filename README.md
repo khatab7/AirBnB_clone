@@ -1,4 +1,5 @@
 # 0x00. AirBnB Clone - The Console
+![image](https://github.com/MaazAlside/AirBnB_clone/assets/53683957/609132c9-889a-4f3e-ab4c-565c2fec65a7)
 
 ## Project Overview
 
