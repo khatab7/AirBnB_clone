@@ -1,8 +1,5 @@
 # 0x00. AirBnB Clone - The Console
 
-**Group Project - By: Guillaume**  
-**Weight: 5**
-
 ## Project Overview
 
 This is a group project to build the first step towards creating an AirBnB clone. The primary objective is to develop a command-line interpreter (CLI) to manage AirBnB objects. The project is to be completed in teams of 2 people, with a start date on Jan 8, 2024, at 6:00 AM, and a deadline for completion by Jan 15, 2024, at 6:00 AM. The checker will be released on Jan 13, 2024, at 12:00 PM.
