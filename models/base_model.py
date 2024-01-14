@@ -4,15 +4,15 @@ import datetime
 
 """class BaseModel defines all common attributes/methods for other classes"""
 
+
 class BaseModel:
     """Base Class for all other Classes"""
-    
+
     def __init__(self):
         """Set up a new instance with a unique ID and timestamps."""
         self.id = str(uuid.uuid4())
         self.created_at = datetime.datetime.now()
         self.updated_at = datetime.datetime.now()
-
 
     def __str__(self):
         """Get a readable string representation of the object's state."""
