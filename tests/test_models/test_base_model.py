@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """TestBaseModel test for BaseModel class."""
 import unittest
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 from models.base_model import BaseModel
 import datetime
 
