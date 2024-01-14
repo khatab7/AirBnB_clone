@@ -19,7 +19,7 @@ class BaseModel:
 
     def save(self):
         """Save the current state of the object."""
-        self.update_at = datetime.datetime.now()
+        update_at = datetime.datetime.now()
 
     def to_dict(self):
         """Convert the object into a dictionary for storage or sharing."""
