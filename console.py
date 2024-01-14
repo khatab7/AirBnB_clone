@@ -1,14 +1,15 @@
-#!/usr/bin/env python3
-import cmd
+#!/usr/bin/python3
 """Console Program"""
+import cmd
 
 
 class HBNBCommand(cmd.Cmd):
     """Program contains the entry point of the command interpreter"""
-    prompt = '(hbnb) '
+    prompt = "(hbnb) "
 
     def do_EOF(self, line):
         "Quit command to exit the program"
+        print()
         return True
 
     def do_quit(self, line):
