@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 import shlex
 from models import storage
 
+
 class HBNBCommand(cmd.Cmd):
     """Program contains the entry point of the command interpreter"""
     prompt = "(hbnb) "
