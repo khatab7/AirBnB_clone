@@ -36,6 +36,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             new_instance = BaseModel()
+            print(new_instance.id)
             new_instance.save()
 
     def do_show(self, arg):
