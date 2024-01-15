@@ -2,6 +2,7 @@
 """Console Program"""
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 import shlex
 from models import storage
 
@@ -9,7 +10,7 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
     """Program contains the entry point of the command interpreter"""
     prompt = "(hbnb) "
-    valid_classes = ["BaseModel"]
+    valid_classes = ["BaseModel", "User"]
 
     def do_EOF(self, line):
         "Quit command to exit the program"
