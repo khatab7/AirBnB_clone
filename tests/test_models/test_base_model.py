@@ -40,7 +40,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_save(self):
         """Test case to check the save method of BaseModel."""
-        mock_now = datetime.datetime(2024, 1, 11, 10, 19, 18, 818094)
+        mock_now = datetime.datetime(2025, 1, 11, 10, 19, 18, 818094)
 
         with patch('datetime.datetime') as mock_datetime:
             mock_datetime.now.return_value = mock_now

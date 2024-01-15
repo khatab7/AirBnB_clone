@@ -2,6 +2,7 @@
 """class BaseModel defines all common attributes/methods for other classes"""
 import uuid
 import datetime
+from models import storage
 
 
 class BaseModel:
@@ -18,6 +19,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
+            storage.new(self)
 
     def __str__(self):
         """Get a readable string representation of the object's state."""
@@ -26,6 +28,7 @@ class BaseModel:
     def save(self):
         """Save the current state of the object."""
         self.updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
         """Convert the object into a dictionary for storage or sharing."""
