@@ -28,7 +28,7 @@ class FileStorage:
         from models.base_model import BaseModel
         from models.user import User
         """deserializes the JSON file to __objects"""
-        cls_name = {'BaseModel': BaseModel, 'User': User }
+        cls_name = {'BaseModel': BaseModel, 'User': User}
         try:
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
