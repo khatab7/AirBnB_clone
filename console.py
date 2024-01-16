@@ -15,7 +15,8 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
     """Program contains the entry point of the command interpreter"""
     prompt = "(hbnb) "
-    classes = ["BaseModel", "User", "City", "State", "Amenity", "Place", "Review"]
+    classes = ["BaseModel", "User", "City", "State", "Amenity", "Place", /
+               "Review"]
 
     def do_EOF(self, line):
         "Quit command to exit the program"
@@ -112,6 +113,7 @@ class HBNBCommand(cmd.Cmd):
                     obj.append(value)
                     print(str(value))
         print(obj)
+
     def do_update(self, arg):
         """
         Update an instance by adding or updating an attribute.
