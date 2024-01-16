@@ -98,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
                 <User>.show()
         """
         objects = storage.all()
-
+        obj = []
         commands = shlex.split(arg)
 
         if len(commands) == 0:
@@ -109,8 +109,9 @@ class HBNBCommand(cmd.Cmd):
         else:
             for key, value in objects.items():
                 if key.split('.')[0] == commands[0]:
+                    obj.append(value)
                     print(str(value))
-
+        print(obj)
     def do_update(self, arg):
         """
         Update an instance by adding or updating an attribute.
