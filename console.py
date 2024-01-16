@@ -3,6 +3,11 @@
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 import shlex
 from models import storage
 
@@ -10,7 +15,7 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
     """Program contains the entry point of the command interpreter"""
     prompt = "(hbnb) "
-    valid_classes = ["BaseModel", "User"]
+    classes = ["BaseModel", "User", "City", "State", "Amenity", "Place", "Review"]
 
     def do_EOF(self, line):
         "Quit command to exit the program"
@@ -34,13 +39,11 @@ class HBNBCommand(cmd.Cmd):
 
         if len(commands) == 0:
             print("** class name missing **")
-        elif commands[0] not in self.valid_classes:
+        elif commands[0] not in self.classes:
             print("** class doesn't exist **")
         else:
-            if commands[0] == "BaseModel":
-                new_instance = BaseModel()
-            elif commands[0] == "User":
-                new_instance = User()
+            class_name = commands[0]
+            new_instance = eval(class_name)()
             new_instance.save()
             print(new_instance.id)
 
@@ -53,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
 
         if len(commands) == 0:
             print("** class name missing **")
-        elif commands[0] not in self.valid_classes:
+        elif commands[0] not in self.classes:
             print("** class doesn't exist **")
         elif len(commands) < 2:
             print("** instance id missing **")
@@ -75,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
 
         if len(commands) == 0:
             print("** class name missing **")
-        elif commands[0] not in self.valid_classes:
+        elif commands[0] not in self.classes:
             print("** class doesn't exist **")
         elif len(commands) < 2:
             print("** instance id missing **")
@@ -101,7 +104,7 @@ class HBNBCommand(cmd.Cmd):
         if len(commands) == 0:
             for key, value in objects.items():
                 print(str(value))
-        elif commands[0] not in self.valid_classes:
+        elif commands[0] not in self.classes:
             print("** class doesn't exist **")
         else:
             for key, value in objects.items():
@@ -117,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
 
         if len(commands) == 0:
             print("** class name missing **")
-        elif commands[0] not in self.valid_classes:
+        elif commands[0] not in self.classes:
             print("** class doesn't exist **")
         elif len(commands) < 2:
             print("** instance id missing **")

@@ -22,6 +22,11 @@ class TestUser(unittest.TestCase):
         self.assertEqual(self.user.last_name, "alside")
         self.assertEqual(self.user.email, "m@gmail.com")
         self.assertEqual(self.user.password, "1234")
+        
+    def test_name(self):
+        """Test Cases for name method."""
+        self.assertEqual(self.user.first_name, "maaz")
+    
 
 
 if __name__ == "__main__":
