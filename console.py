@@ -37,9 +37,12 @@ class HBNBCommand(cmd.Cmd):
         elif commands[0] not in self.valid_classes:
             print("** class doesn't exist **")
         else:
-            new_instance = BaseModel()
-            print(new_instance.id)
+            if commands[0] == "BaseModel":
+                new_instance = BaseModel()
+            elif commands[0] == "User":
+                new_instance = User()
             new_instance.save()
+            print(new_instance.id)
 
     def do_show(self, arg):
         """

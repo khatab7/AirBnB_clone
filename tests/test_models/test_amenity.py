@@ -4,15 +4,16 @@ from models.base_model import BaseModel
 from models.amenity import Amenity
 import unittest
 
-class TestCity(unittest.TestCase):
+
+class TestAmenity(unittest.TestCase):
     """Test Cases"""
-    
-    def test_city(self):
+
+    def test_amenity(self):
         """Test Amenity Class"""
         amenity = Amenity()
         self.assertIsInstance(amenity, Amenity)
         self.assertIsInstance(amenity, BaseModel)
-        
+
     def test_attributes(self):
         """ """
         amenity = Amenity()

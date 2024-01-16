@@ -14,5 +14,6 @@ class TestState(unittest.TestCase):
         self.assertIsInstance(state, State)
         self.assertIsInstance(state, BaseModel)
 
+
 if __name__ == '__main__':
     unittest.main()

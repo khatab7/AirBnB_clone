@@ -4,15 +4,16 @@ from models.base_model import BaseModel
 from models.place import Place
 import unittest
 
+
 class TestPlace(unittest.TestCase):
     """Test Cases"""
-    
+
     def test_place(self):
         """Test Place Class"""
         place = Place()
         self.assertIsInstance(place, Place)
         self.assertIsInstance(place, BaseModel)
-        
+
     def test_attributes(self):
         """ """
         place = Place()

@@ -4,15 +4,16 @@ from models.base_model import BaseModel
 from models.review import Review
 import unittest
 
+
 class TestReview(unittest.TestCase):
     """Test Cases"""
-    
+
     def test_review(self):
-        """Test State Class"""
+        """Test review Class"""
         review = Review()
         self.assertIsInstance(review, Review)
         self.assertIsInstance(review, BaseModel)
-        
+
     def test_attributes(self):
         """ """
         review = Review()
