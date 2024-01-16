@@ -15,7 +15,7 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
     """Program contains the entry point of the command interpreter"""
     prompt = "(hbnb) "
-    classes = ["BaseModel", "User", "City", "State", "Amenity", "Place", /
+    classes = ["BaseModel", "User", "City", "State", "Amenity", "Place",
                "Review"]
 
     def do_EOF(self, line):
