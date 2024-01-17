@@ -1,42 +1,44 @@
-#!/usr/bin/python3
-"""class BaseModel defines all common attributes/methods for other classes"""
+#!/usr/bin/env python3
+'''Module for the definition of a base model that
+defines all common attributes/methods for other classes'''
+
 import uuid
-import datetime
-from models import storage
+from datetime import datetime
+import models
 
 
-class BaseModel:
-    """Base Class for all other Classes"""
+class BaseModel(object):
+    '''Class defining base features found in different classes'''
+
     def __init__(self, *args, **kwargs):
-        """Set up a new instance with a unique ID and timestamps."""
         if kwargs:
-            for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    value = datetime.datetime.fromisoformat(value)
-                if key != "__class__":
-                    setattr(self, key, value)
+            self.__dict__ = {
+                **kwargs, "created_at":
+                datetime.fromisoformat(kwargs['created_at']),
+                "updated_at": datetime.fromisoformat(kwargs['updated_at']),
+                "__class__": ""
+            }
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
-            storage.new(self)
+            self.created_at = datetime.now()
+            models.storage.new(self)
+
+    def __setattr__(self, key, value):
+        object.__setattr__(self, 'updated_at', datetime.now())
+        object.__setattr__(self, key, value)
 
     def __str__(self):
-        """Get a readable string representation of the object's state."""
-        return f"[BaseModel] ({self.id}) {self.__dict__}"
+        return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
 
     def save(self):
-        """Save the current state of the object."""
-        self.updated_at = datetime.datetime.now()
-        storage.save()
+        self.updated_at = datetime.now()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
-        """Convert the object into a dictionary for storage or sharing."""
-        dictionary = {}
-
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        return {
+            **self.__dict__,
+            "__class__": self.__class__.__name__,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat()
+        }
