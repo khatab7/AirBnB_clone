@@ -1,30 +1,34 @@
-#!/usr/bin/python3
-"""This module defines a class FileStorage"""
+#!/usr/bin/env python3
+'''Module defining the file storage class'''
+
 import json
+from datetime import datetime
+from ..amenity import Amenity
+from ..base_model import BaseModel
+from ..city import City
+from ..place import Place
+from ..review import Review
+from ..state import State
+from ..user import User
 
 
 class FileStorage:
-    """Serializes instances to a JSON file and deserializes JSON file
-    to instances"""
-    __file_path = "file.json"
+    '''Class for serialization and deserialization of instances to JSON'''
+
+    __file_path = 'file.json'
     __objects = {}
 
+    def __init__(self, *args, **kwargs):
+        pass
+
     def all(self):
-        """returns the dictionary __objects"""
+        '''Public instance method to return a list of all objects in memory'''
         return FileStorage.__objects
 
     def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
-        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
-
-    def save(self):
-        """ """
-        with open(FileStorage.__file_path, 'w') as file:
-            data = {}
-            data.update(FileStorage.__objects)
-            for key, value in data.items():
-                data[key] = value.to_dict()
-            json.dump(data, file)
+        # new_obj = {**obj}
+        class_name = obj.__class__.__name__
+        FileStorage.__objects[f'{class_name}.{obj.id}'] = obj
 
     def update(self, obj_id, attr_key, attr_value):
         try:
@@ -56,31 +60,20 @@ class FileStorage:
         except KeyError:
             return False
 
-    def reload(self):
-        """deserializes the JSON file to __objects"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.amenity import Amenity
-        from models.city import City
-        from models.review import Review
-        from models.state import State
+    def save(self):
+        currObjs = FileStorage.__objects
+        objDict = {obj: currObjs[obj].to_dict() for obj in currObjs.keys()}
+        fileName = FileStorage.__file_path
+        with open(f'{fileName}', 'w', encoding='utf8') as file_db:
+            json.dump(objDict, file_db)
 
-        
-        cls_name = {
-            'BaseModel': BaseModel,
-            'User': User,
-            'Place': Place,
-            'Amenity': Amenity,
-            'City': City,
-            'Review': Review,
-            'State': State
-            }
+    def reload(self):
         try:
-            data = {}
-            with open(FileStorage.__file_path, 'r') as file:
-                data = json.load(file)
-                for key, value in data.items():
-                    self.all()[key] = cls_name[value['__class__']](**value)
+            with open(f'{FileStorage.__file_path}', 'r') as file_db:
+                reload_objs = json.load(file_db)
+                for obj in reload_objs.values():
+                    cls_name = obj['__class__']
+                    del obj['__class__']
+                    self.new(eval(cls_name)(**obj))
         except FileNotFoundError:
             pass
