@@ -32,124 +32,83 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """
-        Create a new instance of BaseModel and save it to the JSON file.
-        Usage: create <class_name>
-        """
-        commands = shlex.split(arg)
-
-        if len(commands) == 0:
+        """Creates a new instance of BaseModel"""
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
-        elif commands[0] not in self.classes:
+        elif args[0] not in models.classes():
             print("** class doesn't exist **")
         else:
-            class_name = commands[0]
-            new_instance = eval(class_name)()
-            new_instance.save()
-            print(new_instance.id)
+            new_obj = models.classes()[args[0]]()
+            storage.save()
+            print(new_obj.id)
 
     def do_show(self, arg):
-        """
-        Show the string representation of an instance.
-        Usage: show <class_name> <id>
-        """
-        commands = shlex.split(arg)
-
-        if len(commands) == 0:
+        """Shows the string representation of an instance"""
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
-        elif commands[0] not in self.classes:
+        elif args[0] not in models.classes():
             print("** class doesn't exist **")
-        elif len(commands) < 2:
+        elif len(args) == 1:
             print("** instance id missing **")
         else:
-            objects = storage.all()
-
-            key = "{}.{}".format(commands[0], commands[1])
-            if key in objects:
-                print(objects[key])
-            else:
+            key = "{}.{}".format(args[0], args[1])
+            if key not in storage.all():
                 print("** no instance found **")
+            else:
+                print(storage.all()[key])
 
     def do_destroy(self, arg):
-        """
-        Delete an instance based on the class name and id.
-        Usage: destroy <class_name> <id>
-        """
-        commands = shlex.split(arg)
-
-        if len(commands) == 0:
+        """Destroys an instance"""
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
-        elif commands[0] not in self.classes:
+        elif args[0] not in models.classes():
             print("** class doesn't exist **")
-        elif len(commands) < 2:
+        elif len(args) == 1:
             print("** instance id missing **")
         else:
-            objects = storage.all()
-            key = "{}.{}".format(commands[0], commands[1])
-            if key in objects:
-                del objects[key]
-                storage.save()
-            else:
+            key = "{}.{}".format(args[0], args[1])
+            if key not in storage.all():
                 print("** no instance found **")
+            else:
+                del storage.all()[key]
+                storage.save()
 
     def do_all(self, arg):
-        """
-        Print the string representation of all instances or a specific class.
-        Usage: <User>.all()
-                <User>.show()
-        """
-        objects = storage.all()
-        obj = []
-        commands = shlex.split(arg)
-
-        if len(commands) == 0:
-            for key, value in objects.items():
-                print(str(value))
-        elif commands[0] not in self.classes:
+        """Prints all string representations of all instances"""
+        args = arg.split()
+        if len(args) > 0 and args[0] not in models.classes():
             print("** class doesn't exist **")
         else:
-            for key, value in objects.items():
-                if key.split('.')[0] == commands[0]:
-                    obj.append(value)
-                    print(str(value))
-        print(obj)
+            objects = [
+                str(obj) for key, obj in storage.all().items()
+                if len(args) == 0 or args[0] == key.split(".")[0]
+            ]
+            print(objects)
 
     def do_update(self, arg):
-        """
-        Update an instance by adding or updating an attribute.
-        Usage: update <class_name> <id> <attribute_name> "<attribute_value>"
-        """
-        commands = shlex.split(arg)
-
-        if len(commands) == 0:
-            print("** class name missing **")
-        elif commands[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(commands) < 2:
-            print("** instance id missing **")
+        """Updates an instance"""
+        args = arg.split()
+        if len(args) < 4:
+            print("** arguments missing **")
         else:
-            objects = storage.all()
-
-            key = "{}.{}".format(commands[0], commands[1])
-            if key not in objects:
+            cls_name = args[0]
+            if cls_name not in models.classes():
+                print("** class doesn't exist **")
+            elif args[1] not in storage.all("{}.{}".format(cls_name, args[2])):
                 print("** no instance found **")
-            elif len(commands) < 3:
-                print("** attribute name missing **")
-            elif len(commands) < 4:
-                print("** value missing **")
             else:
-                obj = objects[key]
-                attr_name = commands[2]
-                attr_value = commands[3]
-
+                obj = storage.all()["{}.{}".format(cls_name, args[2])]
+                attr_name = args[3]
                 try:
-                    attr_value = eval(attr_value)
-                except Exception:
-                    pass
-                setattr(obj, attr_name, attr_value)
-
-                obj.save()
-
+                    attr_value = cast(args[4], obj.__dict__[attr_name].__class__)
+                except (KeyError, AttributeError, ValueError):
+                    print("** attribute name or value invalid **")
+                else:
+                    setattr(obj, attr_name, attr_value)
+                    storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
