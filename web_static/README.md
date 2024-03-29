@@ -1,1 +1,1 @@
-web_static
+airbnb__web_static
